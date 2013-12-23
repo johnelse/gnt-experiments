@@ -1,0 +1,4 @@
+*.o
+*.swp
+
+test_gntshr_gnttab/test_gntshr_gnttab
