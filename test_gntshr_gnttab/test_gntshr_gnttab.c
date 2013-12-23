@@ -36,7 +36,9 @@ int main(int argc, char **argv) {
         exit(1);
     }
 
-    printf("Sharing page with ref %d.\n", *refs);
+    for(i = 0; i < PAGE_COUNT; i++) {
+        printf("Sharing page with ref %d.\n", refs[i]);
+    }
 
     for(i = 0; i < PAGE_COUNT; i++) {
         domids[i] = DOMID;
