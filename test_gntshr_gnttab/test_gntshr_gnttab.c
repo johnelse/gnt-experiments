@@ -1,4 +1,4 @@
-#include <asm-generic/mman-common.h>
+#include <sys/mman.h>
 #include <stdio.h>
 #include <stdlib.h>
 
