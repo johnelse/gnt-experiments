@@ -32,6 +32,8 @@ int main(int argc, char **argv) {
         exit(1);
     }
 
+    printf("Sharing page with ref %d.\n", *refs);
+
     remote_share = xc_gnttab_map_grant_ref(gnttab_if, 0, *refs, PROT_READ);
     if(!remote_share) {
         printf("Failed to map memory.\n");
