@@ -4,14 +4,19 @@
 
 #include <xenctrl.h>
 
+#define PAGE_COUNT 1
+#define DOMID 0
+
 int main(int argc, char **argv) {
     xc_gntshr *gntshr_if;
     xc_gnttab *gnttab_if;
 
-    uint32_t *refs;
+    uint32_t refs[PAGE_COUNT];
+    uint32_t domids[PAGE_COUNT];
     void* local_share;
     void* remote_share;
 
+    int i;
     int err;
 
     gntshr_if = xc_gntshr_open(NULL, 0);
@@ -25,8 +30,7 @@ int main(int argc, char **argv) {
         exit(1);
     }
 
-    refs = malloc(sizeof(uint32_t));
-    local_share = xc_gntshr_share_pages(gntshr_if, 0, 1, refs, 0);
+    local_share = xc_gntshr_share_pages(gntshr_if, DOMID, PAGE_COUNT, refs, 0);
     if(!local_share) {
         printf("Failed to share memory.\n");
         exit(1);
@@ -34,7 +38,10 @@ int main(int argc, char **argv) {
 
     printf("Sharing page with ref %d.\n", *refs);
 
-    remote_share = xc_gnttab_map_grant_ref(gnttab_if, 0, *refs, PROT_READ);
+    for(i = 0; i < PAGE_COUNT; i++) {
+        domids[i] = DOMID;
+    }
+    remote_share = xc_gnttab_map_grant_refs(gnttab_if, PAGE_COUNT, domids, refs, PROT_READ);
     if(!remote_share) {
         printf("Failed to map memory.\n");
         exit(1);
