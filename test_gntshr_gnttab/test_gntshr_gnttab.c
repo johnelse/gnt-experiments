@@ -7,6 +7,8 @@
 #define PAGE_COUNT 1
 #define DOMID 0
 
+/* Open one interface to each of gntshr and gnttab, and use these for both
+ * mapping and unmapping. */
 int test_open_once() {
     xc_gntshr *gntshr_if;
     xc_gnttab *gnttab_if;
